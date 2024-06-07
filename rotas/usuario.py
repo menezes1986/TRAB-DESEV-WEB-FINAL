@@ -6,11 +6,13 @@ usuario_rota = Blueprint('usuario', __name__)
 
 # Configuração do banco de dados
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '13032018',
-    'database': 'user_gerenciador',
+    'host':'monorail.proxy.rlwy.net',
+    'port':'29478',
+    'user':'root',
+    'password':'cwOsMehfTlwcidAUisLOJJhPrjvIqeyn',
+    'database':'railway',
 }
+
 
 @usuario_rota.route('/')
 def landing():
@@ -24,7 +26,7 @@ def dashboard():
 def lista_usuario():
     db = mysql.connector.connect(**db_config)
     cursor = db.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM users')
+    cursor.execute('SELECT * FROM usuarios')
     rows = cursor.fetchall()
     cursor.close()
     db.close()
@@ -38,7 +40,7 @@ def login():
 
         db = mysql.connector.connect(**db_config)
         cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM users WHERE nome = %s AND senha = %s", (username, password))
+        cursor.execute("SELECT * FROM usuarios WHERE nome = %s AND senha = %s", (username, password))
         user = cursor.fetchone()
         cursor.fetchall()
         cursor.close()
@@ -63,7 +65,7 @@ def register():
 
         db = mysql.connector.connect(**db_config)
         cursor = db.cursor()
-        cursor.execute("INSERT INTO users (nome, email, senha) VALUES (%s, %s, %s)", (username, email, password))
+        cursor.execute("INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)", (username, email, password))
         db.commit()
         cursor.close()
         db.close()
@@ -79,7 +81,7 @@ def formulario(id=None):
     if id:
         db = mysql.connector.connect(**db_config)
         cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM users WHERE ID = %s", (id,))
+        cursor.execute("SELECT * FROM usuarios WHERE ID = %s", (id,))
         user = cursor.fetchone()
         cursor.close()
         db.close()
@@ -93,10 +95,10 @@ def formulario(id=None):
         cursor = db.cursor()
         
         if id:
-            cursor.execute("UPDATE users SET nome = %s, email = %s, senha = %s WHERE ID = %s", (nome, email, senha, id))
+            cursor.execute("UPDATE usuarios SET nome = %s, email = %s, senha = %s WHERE ID = %s", (nome, email, senha, id))
             flash('Usuário atualizado com sucesso!')
         else:
-            cursor.execute("INSERT INTO users (nome, email, senha) VALUES (%s, %s, %s)", (nome, email, senha))
+            cursor.execute("INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)", (nome, email, senha))
             flash('Usuário registrado com sucesso!')
         
         db.commit()
@@ -112,7 +114,7 @@ def delete(id):
         return redirect(url_for('usuario.login'))
     db = mysql.connector.connect(**db_config)
     cursor = db.cursor()
-    cursor.execute("DELETE FROM users WHERE ID=%s", (id,))
+    cursor.execute("DELETE FROM usuarios WHERE ID=%s", (id,))
     db.commit()
     cursor.close()
     db.close()
@@ -124,7 +126,7 @@ def view(id):
         return redirect(url_for('usuario.login'))
     db = mysql.connector.connect(**db_config)
     cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM users WHERE ID=%s", (id,))
+    cursor.execute("SELECT * FROM usuarios WHERE ID=%s", (id,))
     user = cursor.fetchone()
     cursor.close()
     db.close()

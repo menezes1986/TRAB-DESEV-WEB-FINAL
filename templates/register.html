@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
 </head>
 <body>
     <h1 class="center-text">Registro de Usuarios</h1>
@@ -12,7 +12,6 @@
         <form method="POST" action="{{ url_for('usuario.register') }}"c-append="#lista_usuario">
             <label for="username">Nome:</label>
             <input type="text" id="nome" name="username" required>
-            
             <br>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
@@ -21,7 +20,9 @@
             <input type="password" id="senha" name="password" required>
             </br>
             <button type="submit">Register</button>
+            <br></br>
+            <a href="{{ url_for('usuario.login') }}">Login</a>
         </form>
-        <a href="{{ url_for('usuario.login') }}">Login</a>
+        
 </body>
 </html>
